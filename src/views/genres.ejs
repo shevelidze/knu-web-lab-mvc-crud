@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./head'); %>
+  </head>
+
+  <body>
+    <h1>Genres</h1>
+    <p><a href="/">Home</a></p>
+    <p><a href="/add-genre">Add</a></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% genreInstances.forEach(genreInstance => { %>
+        <tr>
+          <td><%= genreInstance.id %></td>
+          <td><%= genreInstance.name %></td>
+          <td><a href="/genres/<%= genreInstance.id%>">Edit/Delete</a></td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </body>
+</html>

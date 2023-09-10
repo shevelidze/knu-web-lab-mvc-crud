@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./head'); %>
+  </head>
+
+  <body>
+    <a href="/directors">Back</a>
+    <h1>Edit director #<%= directorInstance.id %></h1>
+    <form method="post">
+      <input
+        type="text"
+        placeholder="First name"
+        name="firstName"
+        value="<%= directorInstance.firstName %>"
+        required
+      />
+      <input
+        type="text"
+        placeholder="Last name"
+        name="lastName"
+        value="<%= directorInstance.lastName %>"
+        required
+      />
+      <p>
+        <button>Save</button>
+      </p>
+    </form>
+    <form method="post">
+      <p>
+        <button>Delete</button>
+      </p>
+    </form>
+  </body>
+</html>

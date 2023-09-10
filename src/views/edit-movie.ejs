@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./head'); %>
+  </head>
+
+  <body>
+    <a href="/movies">Back</a>
+    <h1>Edit movie #<%= movieInstance.id %></h1>
+    <form method="post">
+      <input
+        type="text"
+        placeholder="Name"
+        name="name"
+        required
+        value="<%= movieInstance.name %>"
+      />
+      <p>
+        <select name="directorId" required>
+          <option value="" disabled>Select a director</option>
+          <% directorInstances.forEach(directorInstance => { %>
+          <option
+            value="<%= directorInstance.id %>"
+            <%= movieInstance.director.id === directorInstance.id ? 'selected' : '' %>
+          >
+            <%= directorInstance.firstName + ' ' + directorInstance.lastName %>
+          </option>
+          <% }); %>
+        </select>
+      </p>
+
+      <fieldset>
+        <legend>Select genres</legend>
+        <% genreInstances.forEach(genreInstance => { %>
+        <div>
+          <input type="checkbox" name="genreId" value="<%= genreInstance.id %>"
+          id="genre-id-input-<%= genreInstance.id %>" <%=
+          movieInstance.genres.find(findGenreInstance => genreInstance.id ===
+          findGenreInstance.id) !== undefined ? 'checked' : '' %> />
+          <label for="genre-id-input-<%= genreInstance.id %>"
+            ><%= genreInstance.name %></label
+          >
+        </div>
+        <% }); %>
+      </fieldset>
+
+      <p>
+        <button>Save</button>
+      </p>
+    </form>
+  </body>
+</html>

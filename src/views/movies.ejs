@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./head'); %>
+  </head>
+
+  <body>
+    <h1>Movies</h1>
+    <p><a href="/">Home</a></p>
+    <p><a href="/add-movie">Add</a></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Genres</th>
+          <th>Director</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% movieInstances.forEach(movieInstance => { %>
+        <tr>
+          <td><%= movieInstance.id %></td>
+          <td><%= movieInstance.name %></td>
+          <td>
+            <%= movieInstance.genres.map(genre => genre.name).join(', ') %>
+          </td>
+          <td><%= getFullName(movieInstance.director) %></td>
+          <td>
+            <a href="/movies/<%= movieInstance.id%>">Edit/Delete</a>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </body>
+</html>

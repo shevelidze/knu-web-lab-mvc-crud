@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./head'); %>
+  </head>
+
+  <body>
+    <h1>Directors</h1>
+    <p><a href="/">Home</a></p>
+    <p><a href="/add-director">Add</a></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>First name</th>
+          <th>Last name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% directorInstances.forEach(directorInstance => { %>
+        <tr>
+          <td><%= directorInstance.id %></td>
+          <td><%= directorInstance.firstName %></td>
+          <td><%= directorInstance.lastName %></td>
+          <td>
+            <a href="/directors/<%= directorInstance.id%>">Edit/Delete</a>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./head'); %>
+  </head>
+
+  <body>
+    <a href="/genres">Back</a>
+    <h1>Edit genre #<%= genreInstance.id %></h1>
+    <form method="post">
+      <input
+        type="text"
+        placeholder="Name"
+        name="name"
+        value="<%= genreInstance.name %>"
+        required
+      />
+      <p>
+        <button>Save</button>
+      </p>
+    </form>
+    <form method="post">
+      <p>
+        <button>Delete</button>
+      </p>
+    </form>
+  </body>
+</html>
