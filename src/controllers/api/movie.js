@@ -1,14 +1,29 @@
 const { movieRepository } = require('../../repositories/movie');
 const { NotFoundError } = require('../../errors/api/not-found');
+const {
+  getPaginationParametersFromQuery,
+} = require('../../utils/get-pagination-parameters-from-query');
+const {
+  generatePaginatedData,
+} = require('../../utils/generate-paginated-data');
 
 const movieApiController = {
   async getMovies(req, res, next) {
     try {
-      const instances = await movieRepository.find({
-        relations: ['genres', 'director'],
-      });
+      const { skip, limit } = getPaginationParametersFromQuery(req.query);
 
-      res.json(instances);
+      const [instances, totalCount] = await Promise.all([
+        movieRepository.find({
+          skip,
+          take: limit,
+          relations: ['genres', 'director'],
+        }),
+        movieRepository.count(),
+      ]);
+
+      res.json(
+        generatePaginatedData('/api/movie', skip, limit, totalCount, instances)
+      );
     } catch (err) {
       next(err);
     }

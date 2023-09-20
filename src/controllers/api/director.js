@@ -1,12 +1,34 @@
 const { directorRepository } = require('../../repositories/director');
 const { NotFoundError } = require('../../errors/api/not-found');
+const {
+  getPaginationParametersFromQuery,
+} = require('../../utils/get-pagination-parameters-from-query');
+const {
+  generatePaginatedData,
+} = require('../../utils/generate-paginated-data');
 
 const directorApiController = {
   async getDirectors(req, res, next) {
     try {
-      const instances = await directorRepository.find();
+      const { skip, limit } = getPaginationParametersFromQuery(req.query);
 
-      res.json(instances);
+      const [instances, totalCount] = await Promise.all([
+        directorRepository.find({
+          skip,
+          take: limit,
+        }),
+        directorRepository.count(),
+      ]);
+
+      res.json(
+        generatePaginatedData(
+          '/api/director',
+          skip,
+          limit,
+          totalCount,
+          instances
+        )
+      );
     } catch (err) {
       next(err);
     }

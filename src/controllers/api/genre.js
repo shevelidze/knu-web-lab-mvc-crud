@@ -1,12 +1,28 @@
 const { genreRepository } = require('../../repositories/genre');
 const { NotFoundError } = require('../../errors/api/not-found');
+const {
+  getPaginationParametersFromQuery,
+} = require('../../utils/get-pagination-parameters-from-query');
+const {
+  generatePaginatedData,
+} = require('../../utils/generate-paginated-data');
 
 const genreApiController = {
   async getGenres(req, res, next) {
     try {
-      const instances = await genreRepository.find();
+      const { skip, limit } = getPaginationParametersFromQuery(req.query);
 
-      res.json(instances);
+      const [instances, totalCount] = await Promise.all([
+        genreRepository.find({
+          skip,
+          take: limit,
+        }),
+        genreRepository.count(),
+      ]);
+
+      res.json(
+        generatePaginatedData('/api/genre', skip, limit, totalCount, instances)
+      );
     } catch (err) {
       next(err);
     }
