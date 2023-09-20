@@ -2,24 +2,9 @@ const { movieRepository } = require('../repositories/movie');
 const { directorRepository } = require('../repositories/director');
 const { genreRepository } = require('../repositories/genre');
 const { getFullName } = require('../utils/get-full-name');
+const { bindMethods } = require('../utils/bind-methods');
 
-function updateInstanceFromBody(instance, body) {
-  const genreIdsFromBody = (
-    Array.isArray(body.genreId)
-      ? body.genreId
-      : body.genreId !== undefined
-      ? [body.genreId]
-      : []
-  ).map((genreIdString) => Number(genreIdString));
-
-  instance.name = body.name;
-  instance.director = { id: Number(body.directorId) };
-  instance.genres = genreIdsFromBody.map((genreId) => ({
-    id: genreId,
-  }));
-}
-
-const movieController = {
+const movieController = bindMethods({
   async getMovies(req, res) {
     const movieInstances = await movieRepository.find({
       relations: ['genres', 'director'],
@@ -41,7 +26,7 @@ const movieController = {
       if (Object.keys(req.body).length === 0) {
         await movieRepository.delete(movieInstance.id);
       } else {
-        updateInstanceFromBody(movieInstance, req.body);
+        this.updateInstanceFromBody(movieInstance, req.body);
 
         await movieRepository.save(movieInstance);
       }
@@ -61,11 +46,11 @@ const movieController = {
     }
   },
 
-  async addMovie(req, res) {
+  async createMovie(req, res) {
     if (req.method === 'POST') {
       const movieInstance = movieRepository.create();
 
-      updateInstanceFromBody(movieInstance, req.body);
+      this.updateInstanceFromBody(movieInstance, req.body);
 
       await movieRepository.save(movieInstance);
 
@@ -77,10 +62,26 @@ const movieController = {
         genreRepository.find(),
       ]);
 
-      res.render('add-movie', { directorInstances, genreInstances });
+      res.render('create-movie', { directorInstances, genreInstances });
     }
   },
-};
+
+  updateInstanceFromBody(instance, body) {
+    const genreIdsFromBody = (
+      Array.isArray(body.genreId)
+        ? body.genreId
+        : body.genreId !== undefined
+        ? [body.genreId]
+        : []
+    ).map((genreIdString) => Number(genreIdString));
+
+    instance.name = body.name;
+    instance.director = { id: Number(body.directorId) };
+    instance.genres = genreIdsFromBody.map((genreId) => ({
+      id: genreId,
+    }));
+  },
+});
 
 module.exports = {
   movieController,

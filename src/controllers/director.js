@@ -27,7 +27,7 @@ const directorController = {
     }
   },
 
-  async addDirector(req, res) {
+  async createDirector(req, res) {
     if (req.method === 'POST') {
       const directorInstance = directorRepository.create(req.body);
       await directorRepository.save(directorInstance);
@@ -35,7 +35,7 @@ const directorController = {
       res.redirect('/directors');
       res.end();
     } else {
-      res.render('add-director');
+      res.render('create-director');
     }
   },
 };
