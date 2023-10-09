@@ -4,9 +4,10 @@ const path = require('path');
 const { dataSource } = require('./data-source');
 const { appConfig } = require('./config/app');
 
+const { cacheMiddleware } = require('./middlewares/cache-middleware');
+
 const { mainRouter } = require('./routers/main');
 const { apiRouter } = require('./routers/api');
-
 
 dataSource
   .initialize()
@@ -19,6 +20,8 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
+
+app.use(cacheMiddleware(['GET'], /\/api\/.*/, 60));
 
 app.use('/', mainRouter);
 app.use('/api/', apiRouter);

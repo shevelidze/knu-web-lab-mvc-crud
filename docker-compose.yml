@@ -22,3 +22,9 @@ services:
       POSTGRES_DB: web_main
     ports:
       - 5431:5432
+
+  redis:
+    image: redis/redis-stack
+    ports:
+      - 6379:6379
+      - 8001:8001
