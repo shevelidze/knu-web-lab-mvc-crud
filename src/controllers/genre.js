@@ -2,7 +2,7 @@ const { genreRepository } = require('../repositories/genre');
 
 const genreController = {
   async getGenres(req, res) {
-    genreRepository.find();
+    const genreInstances = await genreRepository.find();
     res.render('genres', { genreInstances });
   },
 

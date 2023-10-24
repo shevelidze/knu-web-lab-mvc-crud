@@ -17,6 +17,7 @@ apiRouter.delete('/genre/:genreId', genreApiController.deleteGenre);
 
 apiRouter.post('/director', directorApiController.createDirector);
 apiRouter.get('/director', directorApiController.getDirectors);
+apiRouter.get('/director/select2', directorApiController.directorsSelect2);
 apiRouter.patch('/director/:directorId', directorApiController.editDirector);
 apiRouter.delete('/director/:directorId', directorApiController.deleteDirector);
 

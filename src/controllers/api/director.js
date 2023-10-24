@@ -83,6 +83,30 @@ const directorApiController = {
       next(err);
     }
   },
+
+  async directorsSelect2(req, res, next) {
+    try {
+      const { term } = req.query;
+
+      const instances = await directorRepository
+        .createQueryBuilder()
+        .select(['director.firstName', 'director.lastName', 'director.id'])
+        .where(
+          "CONCAT(director.firstName, ' ', director.lastName) ILIKE :term",
+          { term: `%${term}%` }
+        )
+        .getMany();
+
+      res.json({
+        results: instances.map((instance) => ({
+          id: instance.id,
+          text: `${instance.firstName} ${instance.lastName}`,
+        }))
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 module.exports = {

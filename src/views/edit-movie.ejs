@@ -16,16 +16,11 @@
         value="<%= movieInstance.name %>"
       />
       <p>
-        <select name="directorId" required>
-          <option value="" disabled>Select a director</option>
-          <% directorInstances.forEach(directorInstance => { %>
-          <option
-            value="<%= directorInstance.id %>"
-            <%= movieInstance.director.id === directorInstance.id ? 'selected' : '' %>
-          >
-            <%= directorInstance.firstName + ' ' + directorInstance.lastName %>
+        <select name="directorId" required class="director-select2">
+          <option value="<%= movieInstance.director.id %>">
+            <%= movieInstance.director.firstName + ' ' +
+            movieInstance.director.lastName %>
           </option>
-          <% }); %>
         </select>
       </p>
 
